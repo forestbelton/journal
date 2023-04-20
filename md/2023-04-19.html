@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2023-04-19" />
+  <title>Journal Notes</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="static/journal.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Journal Notes</h1>
+<p class="date">2023-04-19</p>
+</header>
+<p>Today I learned about perceptual hashing techniques. I thought it would be interesting to see if I could devise a method to use builtin SQLite index types to construct a spatial index over perceptual hashes.</p>
+<p>I skimmed through a survey paper <a href="https://arxiv.org/abs/2108.11794">State of the Art: Image Hashing</a> that described some of the approaches out there. Performance differences between RP-IVD, SS-Salient-SF, pHash, and F-DNS were explored. Models were tested for their resilience against certain content-preserving operations. Of these, pHash seemed like the most worth exploring at this time.</p>
+<p>I also noted that this paper was written in 2021 and it’s possible the field has also rapidly progressed since then. In particular, the results in <a href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a> looked promising, but I haven’t read it yet. It would be interesting to know if an image recognizer could be finetuned from a trained LLM.</p>
+<h3 id="locating-a-mistake">Locating a mistake</h3>
+<p>I located the <a href="https://www.phash.org/">pHash website</a> and read the relevant sections in the only publication listed: <a href="https://www.phash.org/docs/pubs/thesis_zauner.pdf">Implementation and Benchmarking of Perceptual Image Hash Functions</a>. I was previously unfamiliar with <a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform">discrete cosine transforms</a> but there wasn’t much left to understand after learning that they are simply a special case of the discrete Fourier transform. There is an error in the leading factor of equation 3.3, which describes elements in the DCT matrix of size <span class="math inline">\(N\)</span>: <span class="math display">\[c\left[n, m\right] = \sqrt{\frac{2}{N}} \cos{\frac{\left(2m+1\right) n \pi}{2N}}\]</span> The DCT matrix fails to be orthonormal under this definition. The correct equation can be found as 3.13 in the <a href="https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/9f67d1d414e446c9b55925ab92c17c15_MIT6_050JS08_chapter3.pdf">chapter 3 course notes</a> for the course <a href="https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/">6.050J Information and Entropy</a> on MIT OpenCourseWare from Spring 2008, where the leading factor has been changed to <span class="math inline">\(\sqrt{\frac{1}{N}}\)</span> for the first row: <span class="math display">\[c\left[n, m\right] = \sqrt{\frac{k_n}{N}} \cos{\frac{\left(2m+1\right) n \pi}{2N}}\]</span> Where <span class="math inline">\(k_n\)</span> is given by: <span class="math display">\[k_n = \begin{cases}
+\sqrt{\frac{1}{N}} &amp; n = 0 \\
+\sqrt{\frac{2}{N}} &amp; \text{otherwise}
+\end{cases}\]</span></p>
+<h2 id="dct-perceptual-hash-algorithm">DCT perceptual hash algorithm</h2>
+<p>After deciphering the issue, I finished reading the thesis’ description of the algorithm. Given an input image, computing its DCT perceptual hash proceeds as follows:</p>
+<ol type="1">
+<li>Convert the image to grayscale (0-255) using only its luminance.</li>
+<li>Apply a 7x7 <a href="https://en.wikipedia.org/wiki/Box_blur">box blur</a> to the image using an <a href="">image convolution</a>. Warping will occur along the edges unless padding is added or the image is clipped afterwards. Since we are about to resize, it is probably fine to just clip.</li>
+<li>Resize the image to 32x32.</li>
+<li>Compute <span class="math inline">\(\text{DCT}\left(I\right) = M \, I \, M^T\)</span>, where <span class="math inline">\(I\)</span> is the image and <span class="math inline">\(M\)</span> is the DCT matrix of size 32. Since the image size is now constant, <span class="math inline">\(M\)</span> and <span class="math inline">\(M^T\)</span> can be precomputed.</li>
+<li>Take 64 low-frequency components (omitting lowest) DCT[1:8, 1:8] and flatten into a 1-dimensional sequence. Doesn’t matter how the flatten happens, just be consistent.</li>
+<li>Calculate the median <span class="math inline">\(m\)</span> of the sequence and map each element to 0 if it is less than <span class="math inline">\(m\)</span>, or 1 otherwise. We now have a bit string of length 64.</li>
+<li>Convert to a 64-bit unsigned integer.</li>
+</ol>
+<p>I wrote a simple implementation of this using numpy and scipy. Originally I had planned to use numpy only, but in order to easily apply an image convolution I needed <code>scipy.ndimage.convolve</code>. I only detected the bug in the paper while writing unit tests.</p>
+<h2 id="sqlite">SQLite</h2>
+<p>Now that I had a method to generate perceptual hashes, I was interested in efficiently matching (via Hamming distance) an input hash against a database of known hashes. I surveyed some SQLite extensions for suitable index types. <a href="https://en.wikipedia.org/wiki/K-d_tree">k-d trees</a> seemed like an interesting choice but they don’t scale well into high (e.g. 64) dimensions.</p>
+<h3 id="rtrees">R*Trees</h3>
+<p>The first thought I had was to use an <a href="https://dl.acm.org/doi/pdf/10.1145/971697.602266">R*Tree</a> across 64 dimensions. However, I was disappointed to learn that SQLite’s <a href="https://www.sqlite.org/rtree.html">R*Tree extension</a> only supports anything wider than 5 dimensions. This still seemed like an interesting theoretical avenue, so I spent some time exploring the idea.</p>
+<p>Since the Hamming distance generates the taxicab metric over perceptual hashes embedded in <span class="math inline">\(\mathbb{R}^n\)</span>, I found that even though R*Trees are assumed to be across the Euclidean metric, I could use a quasi-isometry to map perceptual hashes to real numbers. The quasi-isometry preserves distances by a constant multiple, which seems sufficient to retain the usefulness of R*Trees. This seems like a generally useful method that works for any metric space with a quasi-isometry to <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
+<h3 id="spellfix1">spellfix1</h3>
+<p>The <a href="https://www.sqlite.org/spellfix1.html">spellfix1</a> virtual table extension includes a spellchecker that can be utilized for searching for hashes with close Hamming distances, e.g.:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">CREATE</span> VIRTUAL <span class="kw">TABLE</span> perceptual_hashes</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">USING</span> spellfix1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> perceptual_hashes (word)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">VALUES</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>  (<span class="st">&#39;0011110111110001001101111010011110011001000010000101100001001101&#39;</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  (<span class="st">&#39;1010110100011111001100010001111000101000111101101010000100110000&#39;</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>  <span class="co">-- ...</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>  (<span class="st">&#39;1010000010000101001010000011001111011001001101011101100001000110&#39;</span>);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="kw">SELECT</span> word <span class="kw">AS</span> <span class="kw">hash</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">FROM</span> perceptual_hashes</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">WHERE</span> word MATCH <span class="st">&#39;0011001001100110111010100010001110110011101000011100101100011011&#39;</span>;</span></code></pre></div>
+<h3 id="decision">Decision</h3>
+<p>I haven’t had the chance to evaluate these methods in practice. spellfix1 has a straightforward implementation so it seems the most feasible. Through clever encoding it may be possible to use R*Trees or increase the performance of spellfix1 itself.</p>
+</body>
+</html>
