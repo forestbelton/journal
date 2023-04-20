@@ -1,7 +1,4 @@
-@font-face {
-    font-family: Chaparral Pro;
-    src: url("chaparral-pro.woff") format("woff");
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400&display=swap');
 
 html, body {
     margin: 0;
@@ -27,7 +24,8 @@ body {
 }
 
 header, p, ol {
-    font-family: Chaparral Pro, Georgia, serif;
+    font-family: 'Roboto Slab', Georgia, serif;
+    font-weight: 300;
     line-height: 1.875rem;
 }
 
