@@ -2,7 +2,7 @@
 set -euo pipefail
 
 MATHJAX_URL=${MATHJAX_URL:-https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js}
-CSS=${CSS:-static/journal.css}
+CSS=${CSS:-../static/journal.css}
 
 DATE="$DATE"
 INPUT="$1"
