@@ -125,6 +125,6 @@
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">FROM</span> perceptual_hashes</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">WHERE</span> word MATCH <span class="st">&#39;0011001001100110111010100010001110110011101000011100101100011011&#39;</span>;</span></code></pre></div>
 <h3 id="decision">Decision</h3>
-<p>I haven’t had the chance to evaluate these methods in practice. spellfix1 has a straightforward implementation so it seems the most feasible. Through clever encoding it may be possible to use R*Trees or increase the performance of spellfix1 itself.</p>
+<p>I haven’t had the chance to evaluate these methods in practice. spellfix1 has a straightforward implementation but it is obviously intractable to store all 64-bit binary strings in such an inefficient format. Through clever encoding it may be possible to use R*Trees or increase the performance of spellfix1 itself.</p>
 </body>
 </html>
