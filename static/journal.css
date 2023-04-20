@@ -1,6 +1,6 @@
 @font-face {
     font-family: Chaparral Pro;
-    src: url("static/chaparral-pro.woff") format("woff");
+    src: url("chaparral-pro.woff") format("woff");
 }
 
 html, body {
