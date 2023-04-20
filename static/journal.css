@@ -1,0 +1,42 @@
+@font-face {
+    font-family: Chaparral Pro;
+    src: url("static/chaparral-pro.woff") format("woff");
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #c6d2d5;
+    height: 100%;
+}
+
+body {
+    background: #ecf0f1;
+    box-sizing: border-box;
+    min-height: 100vh;
+    margin: 2rem auto 5rem;
+    max-width: 728px;
+    padding: 1rem 2rem;
+}
+
+.date {
+    color: #7f8c8d;
+}
+
+header, p, ol {
+    font-family: Chaparral Pro, Georgia, serif;
+    line-height: 1.875rem;
+}
+
+h2 {
+    margin: 3rem 0;
+}
+
+div.sourceCode {
+    background: #bdc3c7;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+}
