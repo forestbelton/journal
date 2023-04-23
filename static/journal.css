@@ -20,10 +20,6 @@ body {
     padding: 1rem 2rem;
 }
 
-.date {
-    color: #7f8c8d;
-}
-
 header, h1, h2, h3, ol, p, table, th, tr, td, ul {
     font-family: 'Roboto Slab', Georgia, serif;
 }
@@ -31,6 +27,15 @@ header, h1, h2, h3, ol, p, table, th, tr, td, ul {
 ol, p, table, th, tr, td, ul {
     font-weight: 300;
     line-height: 1.875rem;
+}
+
+header > h1 {
+    margin-bottom: 0;
+}
+
+header > .date {
+    color: #7f8c8d;
+    margin: 0 0 2rem;
 }
 
 h2 {
