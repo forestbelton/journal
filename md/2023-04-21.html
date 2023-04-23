@@ -87,7 +87,7 @@
 <blockquote>
 <p>This software is an educational demonstration of Natural Language Processing (NLP), an AI technology, as applied to the adventure game “The Portopia Serial Murder Case” (created by Yuji Horii and first published in Japan in 1983). At the time of the game’s original release, most adventure games were played using a “command input” system, where the player was asked to type in text to decide the actions of their character. Free text input systems like these allowed players to feel a great deal of freedom. However, they did come with one common source of frustration: players knowing what action they wanted to perform but being unable to do so because they could not find the right wording. This problem was caused by the limitations of PC performance and NLP technology of the time. 40 years have passed since then, and PC performance has drastically improved, as have the capabilities of NLP technology. Using “The Portopia Serial Murder Case” as a test case, we’d like to show you the capabilities of modern NLP and the impact it can have on adventure games, as well as deepen your understanding of NLP technologies.</p>
 </blockquote>
-<p>It’s exciting to see a company like Square Enix experimenting with NLP technology. I wonder what techniques they are using to accomplish this. Unfortunately, it seems like they haven’t shared any details about it yet. The blog for SQUARE ENIX AI Division] has this to say on its <a href="https://www.jp.square-enix.com/ai-division/en/2023/04/square-enix-ai-tech-preview-the-portopia-serial-murder-case-will-be-available.html">latest post</a>:</p>
+<p>It’s exciting to see a company like Square Enix experimenting with NLP technology. I wonder what techniques they are using to accomplish this. Unfortunately, it seems like they haven’t shared any details about it yet. The blog for SQUARE ENIX AI Division has this to say on its <a href="https://www.jp.square-enix.com/ai-division/en/2023/04/square-enix-ai-tech-preview-the-portopia-serial-murder-case-will-be-available.html">latest post</a>:</p>
 <blockquote>
 <p>So what is NLP? Don’t worry, our experts will explain it soon on this AI technology blog. In the meantime, please wait a while and try the trending technology called NLP for yourself!</p>
 </blockquote>
@@ -101,7 +101,7 @@
 </ol>
 <p>Therefore, the approach I took probably wasn’t the most effective or canonical method. However, it gave me an excuse to play with a few new technologies, and I learned a lot.</p>
 <h3 id="game-command-execution">Game command execution</h3>
-<p>I chose <a href="https://gitlab.com/esr/open-adventure">open-adventure</a> for an implementation of Colossal Cave Adventure. I really enjoyed seeing that ESR was actively developing it. I found the dictionary of valid game words in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">/adventure.yaml</a>. The type of commands is called <code>command_t</code> and defined in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/advent.h#L282">/advent.h</a> (comments my own):</p>
+<p>I chose <a href="https://gitlab.com/esr/open-adventure">open-adventure</a> for an implementation of Colossal Cave Adventure. I really enjoyed seeing that ESR was actively developing it. The dictionary of valid game words is in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">/adventure.yaml</a>. The relevant type is called <code>command_t</code> and defined in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/advent.h#L282">/advent.h</a> (comments my own):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="kw">enum</span> speechpart part; <span class="co">// Transitive, intransitive, unknown</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    command_word_t word[<span class="dv">2</span>]; <span class="co">// Raw word and its type</span></span>
@@ -113,11 +113,11 @@
 <h2 id="next-steps">Next steps</h2>
 <p>After learning about the available user commands I came up with a strategy to augment Colossal Cave Adventures with English language support:</p>
 <ol type="1">
-<li>Perform chat completion with OpenAI to complete word fragments in the game dictionary. This is required since all words greater than 5 characters have been truncated. This is also completely overkill but very cool.</li>
+<li>Perform chat completion with OpenAI to complete word fragments in the game dictionary. This is required since all words greater than 5 characters have been truncated. A simpler approach would be just as effective but not as cool.</li>
 <li>Generate a corpus of sentences that map plain English sentences into game commands using a command-to-word mapping.</li>
 <li>Finetune an <a href="https://github.com/BlinkDL/RWKV-LM">RWKV-LM</a> model on the example sentences. Ideally, this will use <a href="https://huggingface.co/BlinkDL/rwkv-4-pile-169m">RWKV-Pile-169M</a> since it has the lowest hardware requirements.</li>
 <li>Write a program that reads user input in a loop. Use the finetuned model to generate a game command and send it to the open-adventure subprocess. The output of the game is piped back to the user’s console.</li>
 </ol>
-<p>Over the next couple of days, I will describe how each component was built. The last post will include a link to the repository where you can play the augmented game. Better brush up on those caving skills!</p>
+<p>Over the next couple of days I will describe how each component was built. The last post will include a link to the repository where you can play the augmented game. Better brush up on those caving skills!</p>
 </body>
 </html>
