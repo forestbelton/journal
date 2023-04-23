@@ -24,8 +24,11 @@ body {
     color: #7f8c8d;
 }
 
-header, h1, h2, h3, p, ol {
+header, h1, h2, h3, p, ol, table, th, tr, td {
     font-family: 'Roboto Slab', Georgia, serif;
+}
+
+p, table, th, tr, td {
     font-weight: 300;
     line-height: 1.875rem;
 }
@@ -43,3 +46,10 @@ div.sourceCode {
     box-sizing: border-box;
     padding: 0.5rem 1rem;
 }
+
+.header > th {
+    box-sizing: border-box;
+    text-align: left;
+    padding: 0 2rem 0.5rem 0;
+}
+
