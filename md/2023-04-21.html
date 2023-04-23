@@ -99,9 +99,9 @@
 <li>Have fun</li>
 <li>Improve understanding of software (PyTorch, RWKV-LM, OpenAI API, et al.)</li>
 </ol>
-<p>This means there are some instances where a simpler approach would have been just as effective. However, it’s more fun to use new and shiny techniques. Given the underlying problem is relatively simple, it helped build familiarity with finetuning RWKV and productionalizing OpenAI, the real goal.</p>
+<p>This means there were some instances where a simpler approach would have been just as effective. It’s more fun to use new, shiny things. It also provided an opportunity for evaluation, given the underlying problem is easily understood.</p>
 <h3 id="game-command-execution">Game command execution</h3>
-<p>I chose <a href="https://gitlab.com/esr/open-adventure">open-adventure</a> for an implementation of Colossal Cave Adventure. I really enjoyed seeing that ESR was actively developing it. The dictionary of valid game words is in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">/adventure.yaml</a>. The relevant type is called <code>command_t</code> and defined in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/advent.h#L282">/advent.h</a> (comments my own):</p>
+<p>I chose <a href="https://gitlab.com/esr/open-adventure">open-adventure</a> for an implementation of Colossal Cave Adventure. It was pleasantly surprising to see that ESR was actively developing it. The dictionary of valid game words is in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">/adventure.yaml</a>. The relevant type is called <code>command_t</code> and defined in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/advent.h#L282">/advent.h</a> (comments my own):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="kw">enum</span> speechpart part; <span class="co">// Transitive, intransitive, unknown</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    command_word_t word[<span class="dv">2</span>]; <span class="co">// Raw word and its type</span></span>
@@ -109,7 +109,7 @@
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    obj_t obj;</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    command_state_t state;</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>} command_t;</span></code></pre></div>
-<p>The four word types correspond to locations the player can move to, specific in-game objects, player actions, and nonnegative integers. Each word may have several aliases. Players can input 1-2 words per line. If a complete <code>command_t</code> can’t be constructed, the game will ask followup questions. Once enough context is available, <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/main.c#L1165">the action is performed</a>.</p>
+<p>The four word types correspond to locations the player can move to, specific in-game objects, player actions, and nonnegative integers. Each word may have several aliases. Players can input 1-2 words per line. If a complete <code>command_t</code> can’t be constructed the game will ask followup questions. Once enough context is available <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/main.c#L1165">the action is performed</a>.</p>
 <h2 id="implementation">Implementation</h2>
 <p>The command structure was the only component of <code>open-adventure</code> needed for implementing an enhanced input prompt. I built the project by:</p>
 <ol type="1">
@@ -118,6 +118,6 @@
 <li>Finetuning an <a href="https://github.com/BlinkDL/RWKV-LM">RWKV-LM</a> model from the generated corpus. <a href="https://huggingface.co/BlinkDL/rwkv-4-pile-169m">RWKV-Pile-169M</a> was used due to its low hardware requirements.</li>
 <li>Writing a wrapper program to connect the language model to the game.</li>
 </ol>
-<p>Over the next couple of days I will describe how each component was built. The last post will include a link to the repository where you can play the augmented game. Better brush up on those caving skills!</p>
+<p>Over the next couple of days I will describe how each component was built. The last post will include a link to the repository with instructions on how to build the augmented game. Better brush up on those caving skills!</p>
 </body>
 </html>
