@@ -99,7 +99,7 @@
 <li>Have fun</li>
 <li>Improve understanding of software (PyTorch, RWKV-LM, OpenAI API, et al.)</li>
 </ol>
-<p>Therefore, the approach I took probably wasn’t the most effective or canonical method. However, it gave me an excuse to play with a few new technologies, and I learned a lot.</p>
+<p>This means there are some instances where a simpler approach would have been just as effective. However, it’s more fun to use new and shiny techniques. Given the underlying problem is relatively simple, it helped build familiarity with finetuning RWKV and productionalizing OpenAI, the real goal.</p>
 <h3 id="game-command-execution">Game command execution</h3>
 <p>I chose <a href="https://gitlab.com/esr/open-adventure">open-adventure</a> for an implementation of Colossal Cave Adventure. I really enjoyed seeing that ESR was actively developing it. The dictionary of valid game words is in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">/adventure.yaml</a>. The relevant type is called <code>command_t</code> and defined in <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/advent.h#L282">/advent.h</a> (comments my own):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
@@ -110,13 +110,13 @@
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    command_state_t state;</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>} command_t;</span></code></pre></div>
 <p>The four word types correspond to locations the player can move to, specific in-game objects, player actions, and nonnegative integers. Each word may have several aliases. Players can input 1-2 words per line. If a complete <code>command_t</code> can’t be constructed, the game will ask followup questions. Once enough context is available, <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/main.c#L1165">the action is performed</a>.</p>
-<h2 id="next-steps">Next steps</h2>
-<p>After learning about the available user commands I came up with a strategy to augment Colossal Cave Adventures with English language support:</p>
+<h2 id="implementation">Implementation</h2>
+<p>The command structure was the only component of <code>open-adventure</code> needed for implementing an enhanced input prompt. I built the project by:</p>
 <ol type="1">
-<li>Perform chat completion with OpenAI to complete word fragments in the game dictionary. This is required since all words greater than 5 characters have been truncated. A simpler approach would be just as effective but not as cool.</li>
-<li>Generate a corpus of sentences that map plain English sentences into game commands using a command-to-word mapping.</li>
-<li>Finetune an <a href="https://github.com/BlinkDL/RWKV-LM">RWKV-LM</a> model on the example sentences. Ideally, this will use <a href="https://huggingface.co/BlinkDL/rwkv-4-pile-169m">RWKV-Pile-169M</a> since it has the lowest hardware requirements.</li>
-<li>Write a program that reads user input in a loop. Use the finetuned model to generate a game command and send it to the open-adventure subprocess. The output of the game is piped back to the user’s console.</li>
+<li>Using OpenAI’s chat completion to complete word fragments in the game dictionary. Every word in the dictionary longer than 5 characters was truncated — likely a reflection of original hardware requirements.</li>
+<li>Generating a corpus of example English sentences mapped to game commands.</li>
+<li>Finetuning an <a href="https://github.com/BlinkDL/RWKV-LM">RWKV-LM</a> model from the generated corpus. <a href="https://huggingface.co/BlinkDL/rwkv-4-pile-169m">RWKV-Pile-169M</a> was used due to its low hardware requirements.</li>
+<li>Writing a wrapper program to connect the language model to the game.</li>
 </ol>
 <p>Over the next couple of days I will describe how each component was built. The last post will include a link to the repository where you can play the augmented game. Better brush up on those caving skills!</p>
 </body>
