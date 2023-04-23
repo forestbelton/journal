@@ -113,42 +113,15 @@
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    obj_t obj; <span class="co">// Command object parsed from word array (transitive only)</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    command_state_t state;</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>} command_t;</span></code></pre></div>
-<p>There are four types of words, sourced from a <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">YAML dictionary</a>:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Word type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Motion</td>
-<td>Location the player can move</td>
-</tr>
-<tr class="even">
-<td>Object</td>
-<td>Specific in-game objects</td>
-</tr>
-<tr class="odd">
-<td>Action</td>
-<td>Valid player actions</td>
-</tr>
-<tr class="even">
-<td>Numeric</td>
-<td>Nonnegative integers</td>
-</tr>
-</tbody>
-</table>
-<p>The user inputs 1-2 of these words for a command. If the game doesn’t have enough context to execute an action, it may ask the player followup questions. Once enough context is available, it <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/main.c#L1165">performs the action</a>.</p>
-<h3 id="plan">Plan</h3>
+<p>There are four types of words, sourced from a <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/adventure.yaml">YAML dictionary</a>: Locations the player can move to, specific in-game objects, player actions, and nonnegative integers. The user inputs 1-2 of these words for a command. If the game doesn’t have enough context to execute an action, it may ask the player followup questions. Once enough context is available, <a href="https://gitlab.com/esr/open-adventure/-/blob/f0119f8431be30713e29ef89a63a45d0fa28111c/main.c#L1165">the action is performed</a>.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>After I learned about the available user commands, I came up with a strategy to augment Colossal Cave Adventures with English language support.</p>
 <ol type="1">
-<li>Since all words greater than 5 characters have been truncated, run a chat completion model to compute the word completions.</li>
-<li>Given the command to word(s) mapping, generate a corpus of sentences that map plain English sentences into game commands.</li>
-<li>Finetune an <a href="">RWKV-LM</a> model on the examples sentences. Ideally, this will use RWKV-Pile-169M since it has the lowest hardware requirements.</li>
-<li>Write a program that reads user input in a loop. The finetuned RWKV model converts the user input to a game command which is sent to a subprocess running open-adventure. The output of the game is piped back to the user’s console.</li>
+<li>Perform chat completion with OpenAI to complete word fragments in the game dictionary, since all words greater than 5 characters have been truncated. This is completely overkill but very cool.</li>
+<li>Generate a corpus of sentences that map plain English sentences into game commands using a command-to-word mapping.</li>
+<li>Finetune an <a href="https://github.com/BlinkDL/RWKV-LM">RWKV-LM</a> model on the example sentences. Ideally, this will use <a href="https://huggingface.co/BlinkDL/rwkv-4-pile-169m">RWKV-Pile-169M</a> since it has the lowest hardware requirements.</li>
+<li>Write a program that reads user input in a loop, using the finetuned model to generate a game command which is sent to an open-adventure subprocess. The output of the game is piped back to the user’s console.</li>
 </ol>
-<h2 id="whats-next">What’s next</h2>
-<p>Over the next couple of days, I will describe how each component was built. The last post will include a link to the repository where you can play with the game itself. Happy caving!</p>
+<p>Over the next couple of days, I will describe how each component was built. The last post will include a link to the repository where you can play the augmented game. Better brush up on those caving skills!</p>
 </body>
 </html>
